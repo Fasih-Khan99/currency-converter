@@ -1,0 +1,70 @@
+<div class="container" [class.loading]="isLoading">
+  <mat-toolbar>CURRENCY CONVERTER</mat-toolbar>
+
+  <mat-card class="converter-card">
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading" color="accent"></mat-progress-bar>
+    
+    <form [formGroup]="converterForm" (ngSubmit)="handleConvert()">
+      <mat-form-field appearance="outline">
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" formControlName="amount" placeholder="0.00">
+        <mat-icon matPrefix style="margin-right: 8px;">payments</mat-icon>
+      </mat-form-field>
+
+      <div class="currency-selectors">
+        <mat-form-field appearance="outline">
+          <mat-label>From</mat-label>
+          <mat-select formControlName="from">
+            <mat-option *ngFor="let c of currencies" [value]="c.code">
+              {{c.code}} - {{c.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>To</mat-label>
+          <mat-select formControlName="to">
+            <mat-option *ngFor="let c of currencies" [value]="c.code">
+              {{c.code}} - {{c.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Historical Date (optional)</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-flat-button class="convert-btn" type="submit" [disabled]="converterForm.invalid">
+        Convert Now
+      </button>
+    </form>
+
+    <div *ngIf="result" class="result-container">
+      <h2>{{ result | number:'1.2-2' }} {{ converterForm.value.to }}</h2>
+      <span>Converted from {{ converterForm.value.amount }} {{ converterForm.value.from }}</span>
+    </div>
+  </mat-card>
+
+  <section class="history-section">
+    <h3><mat-icon>history</mat-icon> Recent Conversions</h3>
+    <div class="history-card">
+      <mat-list>
+        <mat-list-item *ngFor="let item of history" class="history-item">
+          <div matLine class="conv-text">
+            {{item.amount}} {{item.from}} ➜ {{item.result | number:'1.2-2'}} {{item.to}}
+          </div>
+          <div matLine class="date-sub">
+            {{item.timestamp | date:'MMM d, h:mm a'}}
+          </div>
+        </mat-list-item>
+        <div *ngIf="history.length === 0" style="padding: 20px; text-align: center; opacity: 0.6;">
+          No history yet
+        </div>
+      </mat-list>
+    </div>
+  </section>
+</div>
