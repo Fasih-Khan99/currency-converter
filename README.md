@@ -1,4 +1,4 @@
-# 🌍 Currency Core - Full Stack Converter
+# 🌍 Currency Converter - Full Stack Project
 A modern, responsive, and real-time Currency Converter built with Angular 19, NestJS, and FreeCurrencyAPI. This project supports real-time conversions and historical data lookups with a persistent transaction history.
 
 ## Setup Instructions
